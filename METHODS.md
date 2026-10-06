@@ -114,3 +114,15 @@ All loss classes are importable from `stable_pretraining.losses`:
 | `MAELoss` | MAE |
 | `CLIPLoss` | Multimodal CLIP-style objectives |
 | `NegativeCosineSimilarity` | SimSiam, general use |
+
+---
+
+## Planned contributions
+
+### SSL-EY (work in progress)
+
+Planned implementation of SSL-EY from [Unconstrained Stochastic CCA: Unifying Multiview and Self-Supervised Learning (ICLR 2024)](https://arxiv.org/abs/2310.01012).
+
+Scope: SSL-EY loss, dict-based forward function, method class, tests, and a reproducible CIFAR-10 training/evaluation example.
+
+Status: implementation and experimental validation pending.
