@@ -1,4 +1,4 @@
-"""Paper recipe tests independent of a live CUDA or Slurm allocation."""
+"""Paper recipe tests independent of a live CUDA device."""
 
 import importlib
 import json
@@ -26,9 +26,7 @@ def recipe_module():
 
 
 def test_paper_config_and_augmentation(recipe_module):
-    config = json.loads(
-        (ROOT / "benchmarks/cifar10/server/ssley-paper.json").read_text()
-    )
+    config = json.loads((ROOT / "benchmarks/cifar10/ssley-paper.json").read_text())
     assert config["epochs"] == 1000 and config["batch_size"] == 256
     assert config["projector_dims"] == [2048, 2048, 2048]
     assert config["source_commit"] == "11eac929a3cfb8fe28cefa573ef87e08fcf1eb27"
@@ -40,6 +38,22 @@ def test_paper_config_and_augmentation(recipe_module):
     assert len(views) == 2
     assert all(view["image"].shape == (3, 32, 32) for view in views)
     assert val(sample)["image"].shape == (3, 32, 32)
+
+
+def test_experiment_configs_differ_only_in_stability_options():
+    def load(name):
+        return json.loads((ROOT / f"benchmarks/cifar10/ssley-{name}.json").read_text())
+
+    paper, stable, fp32_only = load("paper"), load("stable"), load("fp32-only")
+    metadata = {"name", "implementation_revision"}
+    stability = {"loss_force_float32", "unadapted_grad_clip_norm"}
+    shared = set(paper) - metadata
+    assert set(stable) - metadata - stability == shared
+    assert set(fp32_only) - metadata - stability == shared
+    assert all(paper[key] == stable[key] == fp32_only[key] for key in shared)
+    assert stable["loss_force_float32"] and fp32_only["loss_force_float32"]
+    assert stable["unadapted_grad_clip_norm"] == 1.0
+    assert "unadapted_grad_clip_norm" not in fp32_only
 
 
 def test_reference_lars_zero_decay_adaptation(recipe_module):
@@ -85,9 +99,7 @@ def test_warmup_endpoints_and_scheduler_resume(recipe_module):
 
 
 def test_classifier_does_not_train_backbone(recipe_module):
-    config = json.loads(
-        (ROOT / "benchmarks/cifar10/server/ssley-paper.json").read_text()
-    )
+    config = json.loads((ROOT / "benchmarks/cifar10/ssley-paper.json").read_text())
     config["projector_dims"] = [16, 16, 8]
     model = recipe_module.PaperSSLEY(config, steps_per_epoch=2)
     assert model.backbone.conv1.padding == (2, 2)

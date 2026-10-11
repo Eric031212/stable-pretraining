@@ -15,10 +15,10 @@ from ssley_reference_scheduler import LinearWarmupCosineAnnealingLR
 
 
 class SessionTimer(Timer):
-    """Give every Slurm allocation its own wall-time budget on resume."""
+    """Give every resumed job its own wall-time budget."""
 
     def load_state_dict(self, state_dict: dict[str, Any]) -> None:
-        """Ignore elapsed time from a previous allocation.
+        """Ignore elapsed time from a previous job.
 
         Args:
             state_dict: Previous callback state, deliberately not restored.
