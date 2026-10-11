@@ -1,4 +1,4 @@
-"""Paper-aligned SSL-EY CIFAR-10 recipe for a single CUDA GPU and Slurm."""
+"""Paper-aligned SSL-EY CIFAR-10 recipe for a single CUDA GPU."""
 
 import argparse
 import json
@@ -153,7 +153,7 @@ def main() -> None:
     """Resolve a recipe, prepare local data, and run or resume with Manager."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--config", type=Path, default=Path(__file__).parent / "server/ssley-paper.json"
+        "--config", type=Path, default=Path(__file__).parent / "ssley-paper.json"
     )
     parser.add_argument("--data-dir", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)

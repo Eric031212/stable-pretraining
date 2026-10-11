@@ -44,7 +44,7 @@ def recipe():
 @pytest.mark.parametrize("device", ["cpu", "cuda"])
 def test_released_loss_and_gradients(device):
     if device == "cuda" and not torch.cuda.is_available():
-        pytest.skip("CUDA AMP parity runs inside a GPU allocation")
+        pytest.skip("CUDA AMP parity requires a GPU")
     torch.manual_seed(17)
     dtype = torch.float16 if device == "cuda" else torch.float32
     x, y = [
@@ -103,10 +103,8 @@ class _AuthorModel(nn.Module):
 @pytest.mark.parametrize("device", ["cpu", "cuda"])
 def test_initialization_forward_gradients_and_updates(recipe, device):
     if device == "cuda" and not torch.cuda.is_available():
-        pytest.skip("CUDA AMP parity runs inside a GPU allocation")
-    config = json.loads(
-        (ROOT / "benchmarks/cifar10/server/ssley-paper.json").read_text()
-    )
+        pytest.skip("CUDA AMP parity requires a GPU")
+    config = json.loads((ROOT / "benchmarks/cifar10/ssley-paper.json").read_text())
     width = 2048 if device == "cuda" else 16
     config["projector_dims"] = [width] * 3
     torch.manual_seed(7)
