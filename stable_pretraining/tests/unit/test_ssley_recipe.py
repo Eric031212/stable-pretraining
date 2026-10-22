@@ -12,7 +12,7 @@ import torch
 from PIL import Image
 
 pytestmark = pytest.mark.unit
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[3]
 
 
 @pytest.fixture(scope="module")

@@ -16,8 +16,8 @@ from torchvision.models import resnet18
 import stable_pretraining as spt
 
 pytestmark = pytest.mark.unit
-ROOT = Path(__file__).resolve().parents[2]
-FIXTURES = Path(__file__).parent / "fixtures/ssley_reference"
+ROOT = Path(__file__).resolve().parents[3]
+FIXTURES = Path(__file__).parents[1] / "fixtures/ssley_reference"
 
 
 def _source(name):

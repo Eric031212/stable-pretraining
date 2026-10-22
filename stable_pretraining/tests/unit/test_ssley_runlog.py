@@ -14,7 +14,7 @@ pytestmark = pytest.mark.unit
 
 @pytest.fixture(scope="module")
 def runlog():
-    path = Path(__file__).resolve().parents[2] / "benchmarks/cifar10"
+    path = Path(__file__).resolve().parents[3] / "benchmarks/cifar10"
     sys.path.insert(0, str(path))
     try:
         spec = importlib.util.spec_from_file_location(

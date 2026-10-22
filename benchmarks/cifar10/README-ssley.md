@@ -113,7 +113,7 @@ The stable run trained 50 epochs fresh (19m28s) and then resumed from the epoch-
 ## Tests
 
 ```bash
-python -m pytest stable_pretraining/tests/test_ssley.py stable_pretraining/tests/test_ssley_recipe.py stable_pretraining/tests/test_ssley_reference.py stable_pretraining/tests/test_ssley_runlog.py -q
+python -m pytest stable_pretraining/tests/unit/test_ssley*.py stable_pretraining/tests/unit/test_methods_smoke.py -k ssley -q
 ```
 
 Coverage includes mathematical values/gradients and invariances, invalid inputs, low precision, label-free training, forward layouts, Manager/checkpoint integration, recipe and configuration semantics, detached classification, vector clipping, AMP recovery and failure guards. Pinned fixtures check author loss/gradient parity, initialization, two optimizer updates and the complete 195000-step learning-rate schedule. CUDA-specific cases skip without CUDA. Source parity does not establish identical historical training trajectories.
